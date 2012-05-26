@@ -18,7 +18,7 @@ public class ConnectionUtils {
     
     // Your Evernote API key. See http://dev.evernote.com/documentation/cloud/
     // Please obfuscate your code to help keep these values secret.
-    public static final String CONSUMER_KEY = "paulovic-test";
+    public static final String CONSUMER_KEY = "paulovic";
     public static final String CONSUMER_SECRET = "99f5fef28fad5da0";
 
     /**

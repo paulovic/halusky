@@ -24,7 +24,7 @@ public class HaluskyActivity extends SherlockActivity {
     private View.OnClickListener mBtnAuthClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(HaluskyActivity.this, "Login", Toast.LENGTH_SHORT).show();
+            startAuth();
         }
     };
 
@@ -74,21 +74,29 @@ public class HaluskyActivity extends SherlockActivity {
 
         updateUiForLoginState();
     }
-    
+
+    /**
+     * Called when the user taps the "Select Image" button.
+     * 
+     * Sends the user to the image gallery to choose an image to share.
+     */
+    private void startAuth() {
+      if (mSession.isLoggedIn()) {
+          mSession.logOut();
+      } else {
+          mSession.authenticate(this);
+      }
+      updateUiForLoginState();
+    }
+
     /**
      * Update the UI based on Evernote authentication state.
      */
     private void updateUiForLoginState() {
       if (mSession.isLoggedIn()) {
           Toast.makeText(this, "Logged", Toast.LENGTH_SHORT).show();
-//        btnAuth.setText(R.string.label_log_out);
-//        btnSave.setEnabled(true);
-//        btnSelect.setEnabled(true);
       } else {
           Toast.makeText(this, "=( not logged", Toast.LENGTH_SHORT).show();
-//        btnAuth.setText(R.string.label_log_in);
-//        btnSave.setEnabled(false);
-//        btnSelect.setEnabled(false);
       }
     }
 }
