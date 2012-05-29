@@ -6,6 +6,7 @@ import com.evernote.client.oauth.android.EvernoteSession;
 import com.halusky.labs.R;
 import com.halusky.labs.utils.ConnectionUtils;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -54,6 +55,16 @@ public class HaluskyActivity extends SherlockActivity {
         mTxtPassword = (EditText) findViewById(R.id.txtPassword);
         mBtnAuth = (Button) findViewById(R.id.btnAuth);
         mBtnAuth.setOnClickListener(mBtnAuthClickListener);
+        
+        Button testButton = (Button) findViewById(R.id.testButton);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CategoryListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
     
     /**
