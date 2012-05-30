@@ -65,6 +65,16 @@ public class HaluskyActivity extends SherlockActivity {
                 startActivity(intent);
             }
         });
+        
+        Button testButtonGrid = (Button) findViewById(R.id.testButtonGrid);
+        testButtonGrid.setOnClickListener(new View.OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
+                startActivity(intent);
+            }
+        });        
     }
     
     /**

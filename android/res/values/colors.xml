@@ -15,4 +15,17 @@
     <color name="text_color_default">#000000</color>
     <color name="text_color_pressed">#ffffff</color>
     
+    <!-- PAULOVIC -->
+    <color name="color_strip_red">#ff0000</color>
+    <color name="color_strip_green">#00ff00</color>
+    <color name="color_strip_blue">#0000ff</color>
+
+    <!-- As seen in 
+        http://www.colourlovers.com/palette/1930/cheer_up_emo_kid -->
+
+    <color name="color_mighty_slate">#556270</color>
+    <color name="color_pacifica">#4ECDC4</color>
+    <color name="color_apple_chic">#C7F464</color>
+    <color name="color_cherry_pink">#FF6B6B</color>
+    <color name="color_grandmas_pillow">#C44D58</color>
 </resources>

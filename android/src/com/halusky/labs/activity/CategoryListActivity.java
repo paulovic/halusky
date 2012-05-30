@@ -1,6 +1,7 @@
 package com.halusky.labs.activity;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,6 +21,9 @@ public class CategoryListActivity extends SherlockListActivity {
     private ListView mListView;
     private MyTestAdapter mAdapter;
 
+    private int mColorArray[] = { R.color.color_apple_chic, R.color.color_cherry_pink,
+                                  R.color.color_grandmas_pillow, R.color.color_mighty_slate,
+                                  R.color.color_pacifica };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +55,7 @@ public class CategoryListActivity extends SherlockListActivity {
             mData.add("Health");
             mData.add("Finance");
 
-            mInflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+            mInflater = LayoutInflater.from(context);
         }
 
         @Override
@@ -72,7 +76,7 @@ public class CategoryListActivity extends SherlockListActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                View itemContainer = mInflater.inflate(R.layout.list_category_item, parent, false);
+                View itemContainer = mInflater.inflate(R.layout.list_color_category_item, parent, false);
                 convertView = itemContainer;
             }
             /**
@@ -80,6 +84,14 @@ public class CategoryListActivity extends SherlockListActivity {
              */
             TextView title = (TextView) convertView.findViewById(R.id.title);
             title.setText(mData.get(position));
+
+            TextView count = (TextView) convertView.findViewById(R.id.itemCount);
+            Integer random = new Random().nextInt(12);
+            count.setText(random.toString());
+            
+            int colorIndex = new Random().nextInt(mColorArray.length);
+            View color_strip =  convertView.findViewById(R.id.colorStrip);
+            color_strip.setBackgroundResource(mColorArray[colorIndex]);
 
             return convertView;
         }

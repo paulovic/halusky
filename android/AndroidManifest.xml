@@ -28,6 +28,11 @@
         </activity>
 
         <activity
+            android:name=".activity.CategoryActivity"
+            android:theme="@style/Theme.Sherlock.Light" >
+        </activity>
+
+        <activity
           android:name="com.evernote.client.oauth.android.EvernoteOAuthActivity"
           android:launchMode="singleTask"
           android:configChanges="orientation|keyboard">

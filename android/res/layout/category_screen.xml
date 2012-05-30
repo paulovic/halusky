@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        
+    <View
+        android:id="@+id/colorStrip"
+        android:layout_width="20dip"
+        android:layout_height="40dip"
+        android:background="@color/color_strip_red" />
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/content_page_large_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/colorStrip"
+            android:layout_alignTop="@id/colorStrip"
+            android:layout_alignBottom="@id/colorStrip"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dip"
+            android:text="Home" />
+
+        <GridView
+            android:id="@+id/questions_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/colorStrip"
+            android:padding="10dip"
+            android:numColumns="2" >
+        </GridView>
+
+</RelativeLayout>

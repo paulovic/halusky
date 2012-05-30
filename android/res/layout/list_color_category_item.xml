@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemContainer"
+    style="@style/list_category_item"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dip"
+    android:minHeight="80dip"
+    android:orientation="horizontal" >
+
+    <View
+        android:id="@+id/colorStrip"
+        android:layout_width="20dip"
+        android:layout_height="match_parent"
+        android:background="@color/color_strip_red" />
+
+    <LinearLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:duplicateParentState="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dip" >
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/content_page_large_text"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Home" />
+
+        <TextView
+            android:id="@+id/itemCount"
+            style="@style/content_page_large_count_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>	
