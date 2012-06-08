@@ -4,4 +4,8 @@
     <string name="hello">Welcome to MindIt!</string>
     <string name="app_name">Halusky</string>
 
+    <string name="category_home">Home</string>
+    <string name="category_documents">Documents</string>
+    <string name="category_personal">Personal</string>
+    <string name="category_health">Health</string>
 </resources>

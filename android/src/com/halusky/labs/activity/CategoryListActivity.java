@@ -1,29 +1,22 @@
 package com.halusky.labs.activity;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.halusky.labs.R;
+import com.halusky.labs.models.Category;
+import com.halusky.labs.view.CategoryItemView;
 
 public class CategoryListActivity extends SherlockListActivity {
 
     private ListView mListView;
-    private MyTestAdapter mAdapter;
 
-    private int mColorArray[] = { R.color.color_apple_chic, R.color.color_cherry_pink,
-                                  R.color.color_grandmas_pillow, R.color.color_mighty_slate,
-                                  R.color.color_pacifica };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +24,15 @@ public class CategoryListActivity extends SherlockListActivity {
 
         initLayoutResources();
         
-        mAdapter = new MyTestAdapter(this);
-        mListView.setAdapter(mAdapter);
+        Category data[] = new Category[] {
+                new Category(R.drawable.categ_home, R.string.category_home, R.color.color_mighty_slate, R.id.category_home),
+                new Category(R.drawable.categ_people, R.string.category_documents, R.color.color_pacifica, R.id.category_documents),
+                new Category(R.drawable.categ_personal, R.string.category_personal, R.color.color_apple_chic, R.id.category_personal),
+                new Category(R.drawable.categ_others, R.string.category_health, R.color.color_cherry_pink, R.id.category_health)
+        };
+
+        CategoryAdapter categoryAdapter = new CategoryAdapter(this, R.layout.list_color_category_item, data);
+        mListView.setAdapter(categoryAdapter);
     }
 
     private void initLayoutResources() {
@@ -40,61 +40,50 @@ public class CategoryListActivity extends SherlockListActivity {
         
     }
 
-    private class MyTestAdapter extends BaseAdapter {
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
 
-        private ArrayList<String> mData;
-        private LayoutInflater mInflater;
-
-        public MyTestAdapter(Context context) {
-            super();
-            mData = new ArrayList<String>();
-
-            mData.add("Home");
-            mData.add("Personal");
-            mData.add("People");
-            mData.add("Health");
-            mData.add("Finance");
-
-            mInflater = LayoutInflater.from(context);
+        Category category = (Category) getListAdapter().getItem(position);
+        switch (category.id) {
+        case R.id.category_home:
+        case R.id.category_documents:
+        case R.id.category_personal:
+        case R.id.category_health:
+            break;
+        default:
+            break;
         }
+    }
 
-        @Override
-        public int getCount() {
-            return mData.size();
-        }
+    /**
+     * List adapter for binding a Category array to a CategoryItemView
+     */
+    private class CategoryAdapter extends ArrayAdapter<Category> {
 
-        @Override
-        public Object getItem(int position) {
-            return mData.get(position);
-        }
+        private Context mContext;
+        private Category mData[] = null;
+        private LayoutInflater mLayoutInflater;
+        private int mLayoudId;
 
-        @Override
-        public long getItemId(int position) {
-            return position;
+        public CategoryAdapter(Context context, int layoutId, Category[] data) {
+            super(context, layoutId, data);
+            mContext = context;
+            mLayoudId = layoutId;
+            mData = data;
+            mLayoutInflater = LayoutInflater.from(mContext);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                View itemContainer = mInflater.inflate(R.layout.list_color_category_item, parent, false);
-                convertView = itemContainer;
-            }
-            /**
-             * This bind should be made inside a container View class
-             */
-            TextView title = (TextView) convertView.findViewById(R.id.title);
-            title.setText(mData.get(position));
+            CategoryItemView row = (CategoryItemView) convertView;
 
-            TextView count = (TextView) convertView.findViewById(R.id.itemCount);
-            Integer random = new Random().nextInt(12);
-            count.setText(random.toString());
-            
-            int colorIndex = new Random().nextInt(mColorArray.length);
-            View color_strip =  convertView.findViewById(R.id.colorStrip);
-            color_strip.setBackgroundResource(mColorArray[colorIndex]);
+            if (row == null) {
+                row = (CategoryItemView) mLayoutInflater.inflate(mLayoudId, parent, false);
+            } 
 
-            return convertView;
+            row.bind(mData[position]);
+            return row;
         }
-        
     }
 }

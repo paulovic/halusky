@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item  type="id"
+           name="category_home" />
+
+    <item  type="id"
+           name="category_documents" />
+
+    <item  type="id"
+           name="category_personal" />
+
+    <item  type="id"
+           name="category_health" />
+</resources>

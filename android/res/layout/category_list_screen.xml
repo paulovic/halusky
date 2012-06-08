@@ -8,11 +8,12 @@
         android:id="@+id/welcome_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="30dip"
+        android:minHeight="50dip"
         android:background="#435465"
         android:textSize="18sp"
         android:textColor="@android:color/white"
         android:text="Welcome Mr Jonnes!"
+        android:gravity="center_vertical"
         android:padding="10dip"/>
     <ListView
         android:id="@android:id/list"

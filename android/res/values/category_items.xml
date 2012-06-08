@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="category_drawable_array">
+        <item>@drawable/categ_home</item>
+        <item>@drawable/categ_personal</item>
+        <item>@drawable/categ_people</item>
+        <item>@drawable/categ_others</item>
+    </array>
+</resources>
