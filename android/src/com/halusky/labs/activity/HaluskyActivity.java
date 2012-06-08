@@ -1,10 +1,21 @@
 package com.halusky.labs.activity;
 
+import org.apache.thrift.TException;
+import org.apache.thrift.transport.TTransportException;
+
 import com.actionbarsherlock.app.SherlockActivity;
 import com.evernote.client.conn.ApplicationInfo;
 import com.evernote.client.oauth.android.EvernoteSession;
+import com.evernote.edam.error.EDAMNotFoundException;
+import com.evernote.edam.error.EDAMSystemException;
+import com.evernote.edam.error.EDAMUserException;
+import com.evernote.edam.type.Note;
+import com.evernote.edam.type.NoteAttributes;
+import com.evernote.edam.type.Notebook;
+import com.evernote.edam.util.EDAMUtil;
 import com.halusky.labs.R;
 import com.halusky.labs.utils.ConnectionUtils;
+import com.halusky.labs.utils.NoteUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,9 +30,6 @@ public class HaluskyActivity extends SherlockActivity {
     private EditText mTxtPassword;
     private Button mBtnAuth;
     
-    // Used to interact with the Evernote web service
-    private EvernoteSession mSession;
-
     private View.OnClickListener mBtnAuthClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -43,11 +51,11 @@ public class HaluskyActivity extends SherlockActivity {
       super.onResume();
 
       // Complete the Evernote authentication process if necessary
-      if (!mSession.completeAuthentication()) {
+      if (!ConnectionUtils.getSessionInstance().completeAuthentication()) {
         // We only want to do this when we're resuming after authentication...
         Toast.makeText(this, "Evernote login failed", Toast.LENGTH_LONG).show();
       }
-
+      Toast.makeText(this, "Token: " + ConnectionUtils.getSessionInstance().getAuthToken(), Toast.LENGTH_LONG).show();
       updateUiForLoginState();
     }
     private void initLayoutResources() {
@@ -81,18 +89,12 @@ public class HaluskyActivity extends SherlockActivity {
      * Setup the EvernoteSession used to access the Evernote API.
      */
     private void setupSession() {
-      ApplicationInfo info = 
-        new ApplicationInfo(ConnectionUtils.CONSUMER_KEY, ConnectionUtils.CONSUMER_SECRET, 
-                ConnectionUtils.EVERNOTE_HOST, ConnectionUtils.APP_NAME, ConnectionUtils.APP_VERSION);
-
       // TODO Retreived the cached Evernote AuthenticationResult if it exists
 //      if (hasCachedEvernoteCredentials) {
 //        AuthenticationResult result = new AuthenticationResult(authToken, noteStoreUrl, webApiUrlPrefix, userId);
 //        session = new EvernoteSession(info, result, getTempDir());
-//      } else {
-        mSession = new EvernoteSession(info, ConnectionUtils.getTempDir());
 //      }
-
+        ConnectionUtils.connectFirstTime();
         updateUiForLoginState();
     }
 
@@ -102,10 +104,10 @@ public class HaluskyActivity extends SherlockActivity {
      * Sends the user to the image gallery to choose an image to share.
      */
     private void startAuth() {
-      if (mSession.isLoggedIn()) {
-          mSession.logOut();
+      if (ConnectionUtils.getSessionInstance().isLoggedIn()) {
+          ConnectionUtils.getSessionInstance().logOut();
       } else {
-          mSession.authenticate(this);
+          ConnectionUtils.getSessionInstance().authenticate(this);
       }
       updateUiForLoginState();
     }
@@ -114,8 +116,48 @@ public class HaluskyActivity extends SherlockActivity {
      * Update the UI based on Evernote authentication state.
      */
     private void updateUiForLoginState() {
-      if (mSession.isLoggedIn()) {
+      if (ConnectionUtils.getSessionInstance().isLoggedIn()) {
           Toast.makeText(this, "Logged", Toast.LENGTH_SHORT).show();
+          Note note = new Note();
+          note.setTitle("My test note number two");
+          String content = 
+                  NoteUtils.NOTE_PREFIX +
+                  "<p>This note was uploaded from Android. It contains an image.</p>" +
+                  NoteUtils.NOTE_SUFFIX;
+          note.setContent(content);
+          
+          NoteAttributes attr = new NoteAttributes();
+          //this makes it read only
+          attr.setContentClass("halusky");
+          note.setAttributes(attr);
+          
+          Notebook notebook = new Notebook();
+          notebook.setName("Halusky" + System.currentTimeMillis());
+          
+          // Create the note on the server. The returned Note object
+          // will contain server-generated attributes such as the note's
+          // unique ID (GUID), the Resource's GUID, and the creation and update time.
+          try {
+              Notebook createNotebook = ConnectionUtils.getSessionInstance().createNoteStore().createNotebook(ConnectionUtils.getSessionInstance().getAuthToken(), notebook);
+              note.setNotebookGuid(createNotebook.getGuid());
+              Note createdNote = ConnectionUtils.getSessionInstance().createNoteStore().createNote(ConnectionUtils.getSessionInstance().getAuthToken(), note);
+        } catch (TTransportException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (EDAMUserException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (EDAMSystemException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (EDAMNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (TException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
       } else {
           Toast.makeText(this, "=( not logged", Toast.LENGTH_SHORT).show();
       }

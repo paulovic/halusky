@@ -12,6 +12,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" 
         android:theme="@style/Theme.Sherlock">
+
         <activity
             android:name=".activity.HaluskyActivity"
             android:label="@string/app_name"

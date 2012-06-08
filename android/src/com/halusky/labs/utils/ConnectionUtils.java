@@ -2,13 +2,15 @@ package com.halusky.labs.utils;
 
 import java.io.File;
 
+import com.evernote.client.conn.ApplicationInfo;
+import com.evernote.client.oauth.android.EvernoteSession;
+
 import android.os.Environment;
 
 public class ConnectionUtils {
     // A directory on disk where your application stores temporary data
     private static final String APP_DATA_PATH = 
       "/Android/data/com.halusky.labs.utils/tmp/";
-
 
     // Change to "www.evernote.com" to use the Evernote production service 
     // instead of the sandbox
@@ -21,17 +23,22 @@ public class ConnectionUtils {
     public static final String CONSUMER_KEY = "paulovic";
     public static final String CONSUMER_SECRET = "99f5fef28fad5da0";
 
-    /**
-     * TODO this should be placed into another class
-     */
-    public static final String NOTE_PREFIX = 
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
-            "<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">" +
-            "<en-note>";
+    private static EvernoteSession sSession;
 
-          // The ENML postamble to every Evernote note 
-    public static final String NOTE_SUFFIX = "</en-note>";
+    public static EvernoteSession getSessionInstance() {
+        if (sSession == null) {
+            ApplicationInfo info = 
+                    new ApplicationInfo(ConnectionUtils.CONSUMER_KEY, ConnectionUtils.CONSUMER_SECRET, 
+                            ConnectionUtils.EVERNOTE_HOST, ConnectionUtils.APP_NAME, ConnectionUtils.APP_VERSION);
 
+            sSession = new EvernoteSession(info, ConnectionUtils.getTempDir());
+        }
+        return sSession;
+    }
+    
+    public static void connectFirstTime() {
+        getSessionInstance();
+    }
     /**
      * Get a temporary directory that can be used by this application to store potentially
      * large files sent to and retrieved from the Evernote API.

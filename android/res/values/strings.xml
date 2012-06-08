@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Welcome to MindIt!</string>
+    <string name="hello">Hooray! Enjoy once.</string>
     <string name="app_name">Halusky</string>
 
     <string name="category_home">Home</string>
